@@ -1,2 +1,4 @@
+https://www.hackerrank.com/challenges/what-type-of-triangle/problem?isFullScreen=true
+
 SELECT IF(A = B AND B = C, 'Equilateral', IF(C >= (A + B) OR B >= (A + C) OR A >= (B + C), 'Not A Triangle', IF(C = B AND C != A OR C = A AND C != B OR A = B AND A != C, 'Isosceles', IF(C != B AND C != A AND B != A, 'Scalene', ''))))
 FROM TRIANGLES
