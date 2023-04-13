@@ -1,0 +1,24 @@
+https://www.hackerrank.com/challenges/draw-the-triangle-1/problem?isFullScreen=true
+
+delimiter $$ -- Sets delimiter to '$$'
+
+CREATE PROCEDURE stars (IN num INT) -- Create procedure named stars, specify that an input should be taken called 'num', and it's an integer
+BEGIN -- All code below here and up to where end is specified will be ran
+    DECLARE num01 INT; -- Declares integer 'num01'
+    DECLARE dynQuery VARCHAR(1500); -- Declares varchar 'dynQuery'
+    SET num01 = num; 
+    SET dynQuery = 'SELECT ';
+    WHILE num01 > 0 DO -- Loops 'num' number of times (based on input)
+        SET dynQuery = concat(dynQuery, 'REPEAT(\'* \', ', num01, ') UNION SELECT '); -- For every iteration 'num01', append to dynQuery an SQL query that prints * 'num01' number of times
+        SET num01 = num01 - 1;
+    END WHILE;
+    SET dynQuery = concat(dynQuery, '\'*\';'); -- Completes the unfinished result of dynQuery as a result of the above loop
+    SET @query = dynQuery; -- Assigns 'dynQuery' to @query as a dynamic SQL query (ie. a query in a string)
+    PREPARE myquery FROM @query; -- Assigns @query to myquery
+    EXECUTE myquery; -- Runs it
+    DEALLOCATE PREPARE myquery; -- Deallocates it from memory
+END$$ -- End procedure
+
+delimiter ; -- Sets delimiter back to ';'
+
+call stars(20); -- Calls procedure 'stars' and gives it an input of 20
