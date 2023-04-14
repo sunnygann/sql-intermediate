@@ -1,0 +1,54 @@
+https://www.hackerrank.com/challenges/challenges/problem?isFullScreen=true&h_r=next-challenge&h_v=zen
+
+
+select h.hacker_id hid2, h.name, count(c.challenge_id) ccid
+from hackers h
+inner join challenges c on h.hacker_id = c.hacker_id 
+group by h.hacker_id, h.name
+having ccid = (
+    select max(ccid)
+    from (
+        select count(challenge_id) ccid
+        from challenges 
+        group by hacker_id
+        ) t
+    )
+
+UNION
+select t3.hid, t3.hn, t3.ccid
+from (
+    select h.hacker_id hid, h.name hn, count(c.challenge_id) ccid
+    from hackers h
+    inner join challenges c on h.hacker_id = c.hacker_id 
+    group by h.hacker_id, h.name
+    having ccid != (
+        select max(ccid)
+        from (
+            select count(challenge_id) ccid
+            from challenges 
+            group by hacker_id
+            ) t
+        )
+    ) t3
+where t3.ccid in (
+    select t3.ccid
+    from (
+        select h.hacker_id hid, h.name hn, count(c.challenge_id) ccid
+        from hackers h
+        inner join challenges c on h.hacker_id = c.hacker_id 
+        group by h.hacker_id, h.name
+        having ccid != (
+            select max(ccid)
+            from (
+                select count(challenge_id) ccid
+                from challenges 
+                group by hacker_id
+                ) t
+            )
+        order by ccid DESC
+        ) t3
+    group by t3.ccid
+    having count(t3.hid) = 1
+)
+ORDER BY ccid DESC, hid2
+
