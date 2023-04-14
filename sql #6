@@ -1,0 +1,6 @@
+https://www.hackerrank.com/challenges/draw-the-triangle-2/problem?isFullScreen=true
+
+
+select repeat('* ', row_number() over()) 
+from information_schema.tables 
+limit 20
